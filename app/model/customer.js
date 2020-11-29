@@ -1,3 +1,5 @@
+//11-29
+const bcrypt = require('bcryptjs')
 const { Sequelize, Model } = require('sequelize')
 const { sequelize } = require('../../core/db')
 const { Order, OrderList } = require('./order')
@@ -5,6 +7,24 @@ const { Cart, CartList } = require('./cart')
 const Product = require('./product')
 
 class Customer extends Model{
+  //11-29
+  static async verifyTelPassword(tel, plainPassword) {
+    const user = await User.findOne({
+      where: {
+        tel
+      }
+    })
+    if (!user) {
+      throw new global.errs.AuthFailed('账号不存在')
+    }
+    // user.password === plainPassword
+    const correct = bcrypt.compareSync(
+      plainPassword, user.password)
+    if(!correct){
+      throw new global.errs.AuthFailed('密码不正确')
+    }
+    return user
+  }
   /* WX */
   static async getUserByOpenid(openid){
     return await Customer.findOne({
@@ -66,6 +86,14 @@ Customer.init({
   },
   tel: {
     type: Sequelize.BIGINT(11)
+  },
+  password: {//11-29
+    type: Sequelize.STRING,
+    set(val) {
+      const salt = bcrypt.genSaltSync(10)
+      const psw = bcrypt.hashSync(val, salt)
+      this.setDataValue('password', psw)
+    }
   },
   openid: {
     type: Sequelize.STRING(64),

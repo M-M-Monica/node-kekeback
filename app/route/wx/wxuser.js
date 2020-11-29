@@ -12,7 +12,8 @@ router.post('/token', async ctx => {
     case LoginType.USER:
       token = await WX.codeToToken(body.account)
       break
-    case LoginType.ADMIN:
+    case LoginType.USER_TEL://11-29
+      token = await telLogin(v.get('body.account'),v.get('body.secret'))
       break
     default:
       throw new global.error.NotFound()
@@ -26,5 +27,10 @@ router.post('/verify', async (ctx) => {
   const isValid = Auth.verifyToken(token)
   ctx.body = isValid
 })
+
+async function telLogin(account, secret) {//11-29
+  const user = await User.verifyTelPassword(account, secret)
+  return token = generateToken(user.id, Auth.USER)
+}
 
 module.exports = router
