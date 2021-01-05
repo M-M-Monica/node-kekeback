@@ -1,26 +1,22 @@
 const Router = require('koa-router')
 const router = new Router({ prefix: '/user' })
-const Customer = require('../../model/customer')
+const { Customer, RegisterValidator } = require('../../model/customer')
 const Auth = require('../../../middleware/auth')
 
-//11-29
-router.post('/register', async (ctx) => {
-  const v = await new RegisterValidator().validate(ctx)
-  // email password
-  // token jwt
-  // token 无意义的随机字符串
-  // 携带数据
-  // uid jwt
-
-  // 令牌获取 颁布令牌
-  const user = {
-      email: v.get('body.email'),
-      password: v.get('body.password2'),
-      nickname: v.get('body.nickname')
+//用户注册
+router.post('/register', async ctx => {
+  const { tel, password } = ctx.request.body
+  //校验看看有没有不符合要求的输入
+  const customer = await new RegisterValidator(tel, password).validateTelPassword()
+  //没问题则拿到输入
+  if (customer) {
+    //把数据加到数据库
+    await Customer.create({
+      tel,
+      password
+    })
+    throw new global.error.Success('注册成功')
   }
-
-  await User.create(user)
-  success()
 })
 
 //获取用户信息

@@ -61,7 +61,7 @@ User.init({
   tel: {
     type: Sequelize.BIGINT(11)
   },
-  password: { 
+  password: {
     type: Sequelize.STRING,
     set(val) {
       const salt = bcrypt.genSaltSync(5)

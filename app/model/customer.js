@@ -8,22 +8,21 @@ const Product = require('./product')
 
 class Customer extends Model{
   //11-29
-  static async verifyTelPassword(tel, plainPassword) {
-    const user = await User.findOne({
+  //登录校验
+  static async verifyTelPassword(tel, password) {
+    const customer = await Customer.findOne({
       where: {
         tel
       }
     })
-    if (!user) {
-      throw new global.errs.AuthFailed('账号不存在')
+    if (!customer) {
+      throw new global.error.Forbidden('号码不存在')
     }
-    // user.password === plainPassword
-    const correct = bcrypt.compareSync(
-      plainPassword, user.password)
+    const correct = bcrypt.compareSync(password, user.password)
     if(!correct){
-      throw new global.errs.AuthFailed('密码不正确')
+      throw new global.error.Forbidden('密码不正确')
     }
-    return user
+    return customer
   }
   /* WX */
   static async getUserByOpenid(openid){
@@ -72,6 +71,35 @@ class Customer extends Model{
   }
 }
 
+//关于注册的校验
+class RegisterValidator {
+  constructor(tel, password) {
+    this.tel = tel
+    this.password = password
+  }
+  //注册校验
+  async validateTelPassword() {
+    if (!validator.isMobilePhone(this.tel, ['zh-CN'])) {
+      throw new global.error.Forbidden('手机号不符合规范')
+    }
+    if (!validator.isLength(this.password, { min: 6, max: 15 })) {
+      throw new global.error.Forbidden('密码至少6个字符，最多15个字符')
+    }
+    if (!validator.matches(this.password, '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]')) {
+      throw new global.error.Forbidden('密码需包括数字和字母')
+    }
+    const customer = await Customer.findOne({
+      where: {
+        tel: this.tel
+      }
+    })
+    if (customer) {
+      throw new global.error.Forbidden('该手机号已注册')
+    }
+    return true
+  }
+}
+
 Customer.init({
   id: {
     type: Sequelize.INTEGER(10),
@@ -90,11 +118,11 @@ Customer.init({
   password: {//11-29
     type: Sequelize.STRING,
     set(val) {
-      const salt = bcrypt.genSaltSync(10)
+      const salt = bcrypt.genSaltSync(5)
       const psw = bcrypt.hashSync(val, salt)
       this.setDataValue('password', psw)
     }
-  },
+  }
   openid: {
     type: Sequelize.STRING(64),
     unique: true
