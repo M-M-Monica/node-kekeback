@@ -4,10 +4,8 @@ const util = require('util')
 const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const LoginType = require('../../../assist/enum')
-const Customer = require('../../model/customer')
-const Auth = require('../../middleware/auth')
-// const WX = require('../../model/wxuser')
-// const Auth = require('../../../middleware/auth')
+const { Customer } = require('../../model/customer')
+const Auth = require('../../../middleware/auth')
 
 //生成token
 router.post('/token', async ctx => {
@@ -18,7 +16,7 @@ router.post('/token', async ctx => {
       token = await codeToToken(body.account)
       break
     case LoginType.USER_TEL://11-29
-      token = await telLogin(body.account,body.secret)
+      token = await telLogin(body.tel,body.password)
       break
     default:
       throw new global.error.NotFound()

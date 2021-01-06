@@ -1,6 +1,6 @@
 const { Sequelize, Model } = require('sequelize')
 const { sequelize } = require('../../core/db')
-const Customer = require('./customer')
+const { Customer } = require('./customer')
 const Product = require('./product')
 
 class Cart extends Model{

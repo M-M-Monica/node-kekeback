@@ -1,5 +1,6 @@
 //11-29
 const bcrypt = require('bcryptjs')
+const validator = require('validator')
 const { Sequelize, Model } = require('sequelize')
 const { sequelize } = require('../../core/db')
 const { Order, OrderList } = require('./order')
@@ -18,7 +19,7 @@ class Customer extends Model{
     if (!customer) {
       throw new global.error.Forbidden('号码不存在')
     }
-    const correct = bcrypt.compareSync(password, user.password)
+    const correct = bcrypt.compareSync(password, customer.password)
     if(!correct){
       throw new global.error.Forbidden('密码不正确')
     }
@@ -122,7 +123,7 @@ Customer.init({
       const psw = bcrypt.hashSync(val, salt)
       this.setDataValue('password', psw)
     }
-  }
+  },
   openid: {
     type: Sequelize.STRING(64),
     unique: true
@@ -140,4 +141,7 @@ Product.belongsToMany(Order, { through: 'OrderList' })
 Cart.belongsToMany(Product, { through: 'CartList' })
 Product.belongsToMany(Cart, { through: 'CartList' })
 
-module.exports = Customer
+module.exports = {
+  Customer,
+  RegisterValidator
+}

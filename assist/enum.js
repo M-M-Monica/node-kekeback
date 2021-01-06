@@ -8,9 +8,9 @@ function isThisType(val){
 }
 
 const LoginType = {
-  USER:100,
+  USER: 100,
   USER_TEL: 150,
-  ADMIN:200,
+  ADMIN: 200,
   isThisType
 }
 

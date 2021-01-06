@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs')
+const validator = require('validator')
 const { sequelize } = require('../../core/db')
 const { Sequelize, Model } = require('sequelize')
-const validator = require('validator')
 
 class User extends Model {
   /* CMS */

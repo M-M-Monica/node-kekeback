@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 const router = new Router({ prefix: '/manage/user' })
-const Customer = require('../../model/customer')
+const { Customer } = require('../../model/customer')
 const { User, RegisterValidator } = require('../../model/manager')
 const loginCheck = require('../../../middleware/login-check')
 
