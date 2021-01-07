@@ -10,6 +10,7 @@ const Auth = require('../../../middleware/auth')
 //生成token
 router.post('/token', async ctx => {
   const body = ctx.request.body
+  console.log('body',body)
   let token;
   switch (body.type) {
     case LoginType.USER:
