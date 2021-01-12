@@ -4,13 +4,13 @@ const { sequelize } = require('../../core/db')
 class Product extends Model{
   /* WX */
   //获取商品列表
-  static async getProduct(category, pageNum){
+  static async getProduct(category, pageNum, pageSize){
     return await Product.findAndCountAll({
       where: {
         category
       },
-      offset: (pageNum-1)*8,
-      limit: 8
+      offset: (pageNum-1)*pageSize,
+      limit: pageSize
     })
   }
   /* CMS */

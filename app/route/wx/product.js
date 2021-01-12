@@ -4,9 +4,12 @@ const Product = require('../../model/product')
 const Auth = require('../../../middleware/auth')
 
 //获取商品列表
-router.get('/list/:category/:pageNum', async ctx => {
-	const { category, pageNum } = ctx.params
-	const product = await Product.getProduct(category, pageNum)
+router.get('/list/:category/:page', async ctx => {
+	const { category, page } = ctx.params
+	let num = JSON.parse(page.split('&')[0].split('=')[1])
+	let size = JSON.parse(page.split('&')[1].split('=')[1])
+	const product = await Product.getProduct(category, num, size)
+	console.log(category,page)
   ctx.body = product
 })
 
