@@ -89,13 +89,19 @@ class RegisterValidator {
     if (!validator.matches(this.password, '^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]')) {
       throw new global.error.Forbidden('密码需包括数字和字母')
     }
-    const customer = await Customer.findOne({
+    let customer = await Customer.findOne({
       where: {
         tel: this.tel
       }
     })
     if (customer) {
       throw new global.error.Forbidden('该手机号已注册')
+    }else{
+        customer = await Customer.create({
+          tel: this.tel,
+          password: this.password
+        })
+        customer.createCart()
     }
     return true
   }

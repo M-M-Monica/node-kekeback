@@ -10,11 +10,6 @@ router.post('/register', async ctx => {
   const customer = await new RegisterValidator(tel, password).validateTelPassword()
   //没问题则拿到输入
   if (customer) {
-    //把数据加到数据库
-    await Customer.create({
-      tel,
-      password
-    })
     throw new global.error.Success('注册成功')
   }
 })
