@@ -21,7 +21,8 @@ class Order extends Model{
   }
   //创建订单cartlist
   static async createOrder(uid, goodsArr, total){
-    const Customer = require('./customer')
+    const { Customer } = require('./customer')
+    console.log('Customer',Customer)
     const customer = await Customer.findOne({
       attributes: {
         exclude: ['openid']
