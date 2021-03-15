@@ -4,7 +4,7 @@ const Product = require('./product')
 const { Cart } = require('./cart')
 
 class Order extends Model{
-  /* WX */
+  /* WX & WEB */
   //获取订单列表
   static async getOrderList(uid){
     return await Order.findAll({
@@ -22,7 +22,6 @@ class Order extends Model{
   //创建订单cartlist
   static async createOrder(uid, goodsArr, total){
     const { Customer } = require('./customer')
-    console.log('Customer',Customer)
     const customer = await Customer.findOne({
       attributes: {
         exclude: ['openid']
@@ -96,6 +95,7 @@ class Order extends Model{
   }
   //获取订单详情
   static async getDetail(id){
+    //两个文件相互调用时出现问题
     const Customer = require('./customer')
     const orderDetail = await Order.findOne({
       include: [
@@ -161,9 +161,6 @@ OrderList.init({
     type: Sequelize.INTEGER(5)
   }
 }, { sequelize, tableName: 'order_list' })
-
-// Order.belongsTo(Customer)
-// OrderList.belongsTo(Product)
 
 module.exports = {
   Order,

@@ -9,7 +9,6 @@ router.get('/list/:category/:page', async ctx => {
 	let num = JSON.parse(page.split('&')[0].split('=')[1])
 	let size = JSON.parse(page.split('&')[1].split('=')[1])
 	const product = await Product.getProduct(category, num, size)
-	console.log(category,page)
   ctx.body = product
 })
 

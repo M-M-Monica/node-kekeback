@@ -10,13 +10,12 @@ const Auth = require('../../../middleware/auth')
 //生成token
 router.post('/token', async ctx => {
   const body = ctx.request.body
-  console.log('body',body)
   let token;
   switch (body.type) {
-    case LoginType.USER:
+    case LoginType.USER://通过微信登录
       token = await codeToToken(body.account)
       break
-    case LoginType.USER_TEL://11-29
+    case LoginType.USER_TEL://通过网页登录
       token = await telLogin(body.tel,body.password)
       break
     default:
@@ -59,7 +58,7 @@ async function codeToToken(code) {
   return generateToken(customer.id, Auth.USER)
 }
 
-async function telLogin(account, secret) {//11-29
+async function telLogin(account, secret) {
   const customer = await Customer.verifyTelPassword(account, secret)
   return token = generateToken(customer.id, Auth.USER)
 }

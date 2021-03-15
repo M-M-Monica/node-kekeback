@@ -1,5 +1,5 @@
 # node-kekeback
-wx-kekedrinks和react-kekecms的后台<br><br>
-wx-kekedrinks: session + redis + bcryptjs<br>
-react-kekecms: basic-auth + jsonwebtoken<br><br>
+react-kekedrinks、wx-kekedrinks和react-kekecms的后台<br><br>
+react-kekedrinks/wx-kekedrinks: basic-auth + jsonwebtoken<br>
+react-kekecms: session + redis + bcryptjs<br><br>
 koa + session + redis + bcryptjs + sequelize + basic-auth + jsonwebtoken

@@ -2,7 +2,7 @@ const { Sequelize, Model } = require('sequelize')
 const { sequelize } = require('../../core/db')
 
 class Product extends Model{
-  /* WX */
+  /* WX & WEB */
   //获取商品列表
   static async getProduct(category, pageNum, pageSize){
     return await Product.findAndCountAll({

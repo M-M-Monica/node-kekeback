@@ -1,10 +1,9 @@
 const { Sequelize, Model } = require('sequelize')
 const { sequelize } = require('../../core/db')
-const { Customer } = require('./customer')
 const Product = require('./product')
 
 class Cart extends Model{
-  /* WX */
+  /* WX & WEB */
   //获取购物车列表
   static async getProductList(uid){
     const cart = await Cart.findOne({

@@ -12,7 +12,7 @@ module.exports = {
 	},
   security: {
     secretKey: "Molly_#137",
-    expiresIn: 60*60*24*30
+    expiresIn: 60*60*2
   },
   wx: {
     appId: '',

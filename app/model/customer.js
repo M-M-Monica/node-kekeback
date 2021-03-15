@@ -1,4 +1,3 @@
-//11-29
 const bcrypt = require('bcryptjs')
 const validator = require('validator')
 const { Sequelize, Model } = require('sequelize')
@@ -8,7 +7,7 @@ const { Cart, CartList } = require('./cart')
 const Product = require('./product')
 
 class Customer extends Model{
-  //11-29
+  /* WX & WEB */
   //登录校验
   static async verifyTelPassword(tel, password) {
     const customer = await Customer.findOne({
@@ -25,7 +24,6 @@ class Customer extends Model{
     }
     return customer
   }
-  /* WX */
   static async getUserByOpenid(openid){
     return await Customer.findOne({
       where:{
@@ -33,6 +31,7 @@ class Customer extends Model{
       }
     })
   }
+  //通过openid注册
   static async registerByOpenid(openid) {
     const customer = await Customer.create({
       openid
@@ -58,7 +57,7 @@ class Customer extends Model{
       where: {
         id: uid
       }
-    })
+    })  
   }
   /* CMS */
   static async getAll(pageNum){
@@ -122,7 +121,7 @@ Customer.init({
   tel: {
     type: Sequelize.BIGINT(11)
   },
-  password: {//11-29
+  password: {
     type: Sequelize.STRING,
     set(val) {
       const salt = bcrypt.genSaltSync(5)

@@ -17,7 +17,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage })
 //图片上传
 router.post('/upload', loginCheck, upload.single('avatar'), async ctx => {
-  //console.log('ctx.file', ctx.file);
   const imgUrl = '/image/'+ctx.file.originalname
   ctx.body = { imgUrl }
 })
